@@ -34,8 +34,6 @@ public class StructureImagesHandler
    private String targetParentFolder;
    @Value( "${structure-images.move-file:true}" )
    private boolean moveFile;
-   @Value( "${structure-images.replace-existing-file:false}" )
-   private boolean replaceExistingFile;
    @Value( "${structure-images.target-folder-date-pattern:yyyy_MM_dd}" )
    private String targetFolderDatePattern;
 
