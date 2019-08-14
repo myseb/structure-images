@@ -7,25 +7,37 @@
 
 package de.seme.structureimages;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.imaging.ImageReadException;
+import org.apache.commons.imaging.Imaging;
+import org.apache.commons.imaging.common.ImageMetadata;
+import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
+import org.apache.commons.imaging.formats.tiff.constants.TiffTagConstants;
 
 public class StructurImagesUtil
 {
-   public static FileTime getCreationTime(File file) throws IOException {
-      Path p = Paths.get(file.getAbsolutePath());
-      BasicFileAttributes view
-          = Files.getFileAttributeView(p, BasicFileAttributeView.class)
-                      .readAttributes();
-      FileTime fileTime=view.creationTime();
-      //  also available view.lastAccessTine and view.lastModifiedTime
-      return fileTime;
-    }
+   public static Date getCreationTime( Path file ) throws Exception
+   {
+      try
+      {
+         final ImageMetadata metadata = Imaging.getMetadata( file.toFile() );
 
+         if ( metadata instanceof JpegImageMetadata )
+         {
+            final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
+            String test[] = jpegMetadata.getExif().getFieldValue( TiffTagConstants.TIFF_TAG_DATE_TIME );
+            return new SimpleDateFormat( "yyyy:MM:dd hh:mm:ss" ).parse( test[0] );
+
+         }
+      }
+      catch ( ImageReadException imageReadException )
+      {
+         // no Image
+         return null;
+      }
+      return null;
+   }
 }

@@ -1,1 +1,4 @@
-
+structure-images:
+  source-folder: /home/sebastian/temp/Bilder
+  target-parent-folder: /home/sebastian/temp/Bilder
+  
