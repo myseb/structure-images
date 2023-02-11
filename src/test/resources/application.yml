@@ -1,0 +1,4 @@
+structure-images:
+  source-folder: .
+  target-parent-folder: .
+  
